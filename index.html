@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для Арины 💖</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Фон с частицами -->
+    <canvas id="particles"></canvas>
+
+    <!-- ЭКРАН 1: кнопка -->
+    <section id="screen-start" class="screen active">
+        <button id="start-btn">Нажми на меня</button>
+    </section>
+
+    <!-- ЭКРАН 2: маленькое сердечко -->
+    <section id="screen-click" class="screen">
+        <div id="small-heart">❤</div>
+        <p id="counter">Кликов: 0 / 3</p>
+    </section>
+
+    <!-- ЭКРАН 3: финал -->
+    <section id="screen-final" class="screen">
+        <pre id="heart"></pre>
+        <p class="love-text">I love you Arinuwu</p>
+        <p id="timer"></p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

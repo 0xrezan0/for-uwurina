@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    /* Цвет фона будет меняться через JS (сцены по времени суток) */
+    background: radial-gradient(circle at center, #1a0d1f 0%, #0a0510 100%);
+    font-family: 'Courier New', monospace;
+    color: #d8d8d8;
+    transition: background 1.5s ease;
+}
+
+/* ---------- Фон с частицами ---------- */
+#particles {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ---------- Экраны ---------- */
+.screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+    z-index: 1;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ---------- Экран 1: кнопка ---------- */
+#start-btn {
+    padding: 16px 42px;
+    font-size: 1.3rem;
+    font-family: inherit;
+    background: #2a1a30;
+    color: #c4a5c9;
+    border: 1px solid #4a2f52;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+#start-btn:hover {
+    background: #35203d;
+    border-color: #6a4373;
+    color: #e0c8e5;
+}
+
+#start-btn:active {
+    background: #201428;
+}
+
+/* ---------- Экран 2: маленькое сердце ---------- */
+#small-heart {
+    font-size: 9rem;
+    color: #b3567a;
+    cursor: pointer;
+    user-select: none;
+    text-shadow: 0 0 12px rgba(179, 86, 122, 0.4);
+    animation: heartbeat 1.4s ease-in-out infinite;
+    transition: transform 0.15s ease, color 0.3s;
+}
+
+#small-heart:hover {
+    color: #c56a8c;
+}
+
+#small-heart:active {
+    transform: scale(0.92);
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    30%      { transform: scale(1.08); }
+    50%      { transform: scale(1); }
+    70%      { transform: scale(1.05); }
+}
+
+#counter {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: #8a6a92;
+    letter-spacing: 2px;
+}
+
+/* ---------- Экран 3: финал ---------- */
+#heart {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1;
+    color: #b3567a;
+    text-shadow: 0 0 8px rgba(179, 86, 122, 0.35);
+    white-space: pre;
+    user-select: none;
+}
+
+.love-text {
+    margin-top: 25px;
+    font-size: 2rem;
+    letter-spacing: 6px;
+    color: #d8c4dc;
+    text-shadow: 0 0 10px rgba(179, 86, 122, 0.3);
+    animation: lovePulse 2.2s ease-in-out infinite;
+    text-align: center;
+    padding: 0 15px;
+}
+
+@keyframes lovePulse {
+    0%, 100% { transform: scale(1);    opacity: 0.85; }
+    50%      { transform: scale(1.03); opacity: 1;    }
+}
+
+#timer {
+    margin-top: 18px;
+    font-size: 1rem;
+    color: #8a6a92;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 0 15px;
+}
+
+/* ---------- Мобильная адаптация ---------- */
+@media (max-width: 700px) {
+    #heart {
+        font-size: 8px;
+    }
+    .love-text {
+        font-size: 1.3rem;
+        letter-spacing: 3px;
+    }
+    #timer {
+        font-size: 0.9rem;
+    }
+    #small-heart {
+        font-size: 6rem;
+    }
+}
