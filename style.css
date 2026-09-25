@@ -172,7 +172,6 @@ body {
     background: rgba(0, 0, 0, 0.75);
     pointer-events: auto;
 }
-
 #secret-photo {
     max-width: 80vw;
     max-height: 80vh;
@@ -182,14 +181,18 @@ body {
         0 0 60px rgba(179, 86, 122, 0.25);
     opacity: 0;
     transform: scale(0.85);
-    transition: opacity 1.2s ease, transform 1.2s ease;
+    filter: blur(20px);
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease,
+        filter 1.2s ease;
 }
 
 #photo-overlay.visible #secret-photo {
     opacity: 1;
     transform: scale(1);
+    filter: blur(0);
 }
-
 /* Мягкое покачивание, пока фото видно */
 #photo-overlay.visible #secret-photo {
     animation: photoFloat 4s ease-in-out infinite;
