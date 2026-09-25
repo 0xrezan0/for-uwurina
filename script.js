@@ -271,3 +271,49 @@ function applyScene() {
 applyScene();
 // Обновляем сцену каждую минуту (если сайт открыт долго)
 setInterval(applyScene, 60 * 1000);
+
+/* ============================================================
+   6. СЕКРЕТНОЕ ФОТО — 7 кликов по большому сердцу
+   ============================================================ */
+const photoOverlay = document.getElementById('photo-overlay');
+const secretPhoto  = document.getElementById('secret-photo');
+
+let heartClicks = 0;
+let photoBusy = false; // блокировка, чтобы не запускать несколько раз подряд
+
+// По клику на ASCII-сердце
+heartEl.addEventListener('click', () => {
+    if (photoBusy) return;
+
+    heartClicks++;
+    console.log(`Клик по сердцу: ${heartClicks} / 7`); // для отладки
+
+    // Лёгкая визуальная реакция
+    heartEl.style.transition = 'transform 0.15s ease';
+    heartEl.style.transform = 'scale(1.03)';
+    setTimeout(() => {
+        heartEl.style.transform = '';
+    }, 150);
+
+    if (heartClicks >= 7) {
+        heartClicks = 0;
+        showSecretPhoto();
+    }
+});
+
+function showSecretPhoto() {
+    photoBusy = true;
+
+    // 1. Показываем оверлей → фото плавно проявляется (CSS transition)
+    photoOverlay.classList.add('visible');
+
+    // 2. Через 4 секунды — плавно скрываем
+    setTimeout(() => {
+        photoOverlay.classList.remove('visible');
+
+        // 3. Ждём, пока анимация исчезновения завершится, и разблокируем
+        setTimeout(() => {
+            photoBusy = false;
+        }, 1300);
+    }, 4000);
+}
