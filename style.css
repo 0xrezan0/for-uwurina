@@ -229,26 +229,10 @@ body.notebook-theme {
         linear-gradient(90deg, rgba(120, 160, 220, 0.35) 1px, transparent 1px);
     background-size: 22px 22px;
     color: #1e3a8a;
-    font-family: 'Comic Sans MS', 'Segoe Print', 'Bradley Hand', cursive;
+    /* Почерк девятиклассника */
+    font-family: 'Caveat', 'Marck Script', cursive;
 }
 
-/* Красная линия слева — как в тетради */
-body.notebook-theme::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 55px;
-    bottom: 0;
-    width: 2px;
-    background: rgba(220, 90, 100, 0.5);
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* Частицы делаем бледнее на тетрадном фоне */
-body.notebook-theme #particles {
-    opacity: 0.35;
-}
 
 /* Кнопка старта — как будто обведена ручкой */
 body.notebook-theme #start-btn {
@@ -326,11 +310,88 @@ body.notebook-theme #secret-photo {
 body.notebook-theme #photo-overlay.visible #secret-photo {
     transform: rotate(-1.5deg) scale(1);
     animation: notebookPhotoFloat 4s ease-in-out infinite;
+/* Кнопка старта — как будто обведена ручкой */
+body.notebook-theme #start-btn {
+    background: transparent;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    border-radius: 6px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 10px 38px;
+    box-shadow:
+        2px 2px 0 rgba(30, 58, 138, 0.3),
+        inset 0 0 0 1px rgba(30, 58, 138, 0.1);
+    /* Лёгкий наклон, как от руки */
+    transform: rotate(-1deg);
+    transition: background 0.3s, transform 0.3s;
 }
 
-@keyframes notebookPhotoFloat {
-    0%, 100% { transform: rotate(-1.5deg) scale(1) translateY(0); }
-    50%      { transform: rotate(-1.5deg) scale(1.02) translateY(-6px); }
+body.notebook-theme #start-btn:hover {
+    background: rgba(30, 58, 138, 0.08);
+    color: #152a6b;
+    transform: rotate(1deg) scale(1.03);
+}
+
+body.notebook-theme #start-btn:active {
+    background: rgba(30, 58, 138, 0.15);
+    transform: rotate(-1deg) scale(0.97);
+}
+
+/* Маленькое сердце — как нарисованное ручкой */
+body.notebook-theme #small-heart {
+    color: #1e3a8a;
+    text-shadow: none;
+    animation: heartbeat 1.4s ease-in-out infinite, sketch 3s ease-in-out infinite;
+}
+
+@keyframes sketch {
+    0%, 100% { transform: rotate(-2deg); }
+    50%      { transform: rotate(2deg); }
+}
+
+/* Счётчик кликов */
+body.notebook-theme #counter {
+    color: #1e3a8a;
+    font-family: 'Caveat', cursive;
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transform: rotate(-1deg);
+}
+
+/* ASCII-сердце — синяя ручка, но остаётся моноширинным */
+body.notebook-theme #heart {
+    color: #1e3a8a;
+    text-shadow: 1px 1px 0 rgba(30, 58, 138, 0.15);
+    /* Оставляем моноширинный шрифт — иначе ASCII-сердце «развалится» */
+    font-family: 'Courier New', monospace;
+    transform: rotate(-0.5deg);
+}
+
+/* Надпись «I love you Arinuwu» — как будто написана от руки */
+body.notebook-theme .love-text {
+    color: #1e3a8a;
+    text-shadow: 1px 1px 0 rgba(30, 58, 138, 0.15);
+    transform: rotate(-2deg);
+    font-family: 'Caveat', 'Marck Script', cursive;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    animation: none; /* убираем пульсацию — пусть выглядит как статичная надпись */
+}
+
+/* Таймер — тоже рукой */
+body.notebook-theme #timer {
+    color: #1e3a8a;
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transform: rotate(-1deg);
+    margin-top: 12px;
 }
 
 /* Кнопка переключения темы — в стиле тетради */
@@ -339,13 +400,14 @@ body.notebook-theme #theme-toggle {
     color: #1e3a8a;
     border: 2px solid #1e3a8a;
     box-shadow: 2px 2px 0 rgba(30, 58, 138, 0.3);
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
 }
 
 body.notebook-theme #theme-toggle:hover {
     background: rgba(30, 58, 138, 0.1);
     color: #152a6b;
 }
-
 /* ---------- Мобильная адаптация ---------- */
 @media (max-width: 700px) {
     #heart { font-size: 8px; }
