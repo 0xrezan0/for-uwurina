@@ -75,10 +75,13 @@ body {
 .screen.active {
     opacity: 1;
     pointer-events: auto;
+    z-index: 2;
 }
-
 /* ---------- Экран 1: кнопка ---------- */
 #start-btn {
+    position: relative;
+    z-index: 5;
+    pointer-events: auto;
     padding: 16px 42px;
     font-size: 1.3rem;
     font-family: inherit;
