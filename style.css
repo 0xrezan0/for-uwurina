@@ -10,19 +10,52 @@ html, body {
 }
 
 body {
-    /* Цвет фона будет меняться через JS (сцены по времени суток) */
     background: radial-gradient(circle at center, #1a0d1f 0%, #0a0510 100%);
     font-family: 'Courier New', monospace;
     color: #d8d8d8;
-    transition: background 1.5s ease;
+    transition: background 1.5s ease, color 0.5s ease;
 }
 
-/* ---------- Фон с частицами ---------- */
+/* ============================================================
+   КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ (слева сверху)
+   ============================================================ */
+#theme-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    color: #cbd5ff;
+    border: 1px solid #3b5bdb;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s, transform 0.2s, color 0.3s;
+    padding-bottom: 2px;
+}
+
+#theme-toggle:hover {
+    background: #2749b8;
+    color: #ffffff;
+    transform: scale(1.08);
+}
+
+#theme-toggle:active {
+    transform: scale(0.94);
+}
+
+/* ---------- Частицы ---------- */
 #particles {
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    transition: opacity 0.5s ease;
 }
 
 /* ---------- Экраны ---------- */
@@ -79,13 +112,8 @@ body {
     transition: transform 0.15s ease, color 0.3s;
 }
 
-#small-heart:hover {
-    color: #c56a8c;
-}
-
-#small-heart:active {
-    transform: scale(0.92);
-}
+#small-heart:hover { color: #c56a8c; }
+#small-heart:active { transform: scale(0.92); }
 
 @keyframes heartbeat {
     0%, 100% { transform: scale(1); }
@@ -110,6 +138,8 @@ body {
     text-shadow: 0 0 8px rgba(179, 86, 122, 0.35);
     white-space: pre;
     user-select: none;
+    cursor: pointer;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
 .love-text {
@@ -121,6 +151,7 @@ body {
     animation: lovePulse 2.2s ease-in-out infinite;
     text-align: center;
     padding: 0 15px;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
 @keyframes lovePulse {
@@ -135,27 +166,10 @@ body {
     letter-spacing: 2px;
     text-align: center;
     padding: 0 15px;
+    transition: color 0.5s ease;
 }
 
-/* ---------- Мобильная адаптация ---------- */
-@media (max-width: 700px) {
-    #heart {
-        font-size: 8px;
-    }
-    .love-text {
-        font-size: 1.3rem;
-        letter-spacing: 3px;
-    }
-    #timer {
-        font-size: 0.9rem;
-    }
-    #small-heart {
-        font-size: 6rem;
-    }
-}
-/* ============================================================
-   СЕКРЕТНОЕ ФОТО (пасхалка после 7 кликов)
-   ============================================================ */
+/* ---------- Секретное фото ---------- */
 #photo-overlay {
     position: fixed;
     inset: 0;
@@ -172,6 +186,7 @@ body {
     background: rgba(0, 0, 0, 0.75);
     pointer-events: auto;
 }
+
 #secret-photo {
     max-width: 80vw;
     max-height: 80vh;
@@ -192,9 +207,6 @@ body {
     opacity: 1;
     transform: scale(1);
     filter: blur(0);
-}
-/* Мягкое покачивание, пока фото видно */
-#photo-overlay.visible #secret-photo {
     animation: photoFloat 4s ease-in-out infinite;
 }
 
@@ -203,15 +215,150 @@ body {
     50%      { transform: scale(1.02) translateY(-6px); }
 }
 
-/* Делаем ASCII-сердце кликабельным */
-#heart {
-    cursor: pointer;
+/* ============================================================
+   📓 ТЕМА «ТЕТРАДНЫЙ ЛИСТ В КЛЕТКУ»
+   ============================================================ */
+
+body.notebook-theme {
+    background-color: #fdfbf3;
+    background-image:
+        linear-gradient(rgba(120, 160, 220, 0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 160, 220, 0.35) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: #1e3a8a;
+    font-family: 'Comic Sans MS', 'Segoe Print', 'Bradley Hand', cursive;
 }
 
-/* На мобильных — фото чуть меньше */
+/* Красная линия слева — как в тетради */
+body.notebook-theme::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 55px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(220, 90, 100, 0.5);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Частицы делаем бледнее на тетрадном фоне */
+body.notebook-theme #particles {
+    opacity: 0.35;
+}
+
+/* Кнопка старта — как будто обведена ручкой */
+body.notebook-theme #start-btn {
+    background: transparent;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: bold;
+    letter-spacing: 3px;
+    box-shadow:
+        2px 2px 0 rgba(30, 58, 138, 0.3),
+        inset 0 0 0 1px rgba(30, 58, 138, 0.1);
+}
+
+body.notebook-theme #start-btn:hover {
+    background: rgba(30, 58, 138, 0.08);
+    color: #152a6b;
+}
+
+body.notebook-theme #start-btn:active {
+    background: rgba(30, 58, 138, 0.15);
+}
+
+/* Маленькое сердце — как нарисованное ручкой */
+body.notebook-theme #small-heart {
+    color: #1e3a8a;
+    text-shadow: none;
+    animation: heartbeat 1.4s ease-in-out infinite, sketch 3s ease-in-out infinite;
+}
+
+@keyframes sketch {
+    0%, 100% { transform: rotate(-1deg); }
+    50%      { transform: rotate(1deg); }
+}
+
+body.notebook-theme #counter {
+    color: #1e3a8a;
+    font-weight: bold;
+}
+
+/* ASCII-сердце — синяя ручка */
+body.notebook-theme #heart {
+    color: #1e3a8a;
+    text-shadow: 1px 1px 0 rgba(30, 58, 138, 0.15);
+}
+
+/* Надпись — как будто написана от руки */
+body.notebook-theme .love-text {
+    color: #1e3a8a;
+    text-shadow: 1px 1px 0 rgba(30, 58, 138, 0.15);
+    transform: rotate(-1.5deg);
+    font-style: italic;
+}
+
+body.notebook-theme #timer {
+    color: #1e3a8a;
+    font-style: italic;
+}
+
+/* Фото на тетрадном фоне */
+body.notebook-theme #photo-overlay.visible {
+    background: rgba(253, 251, 243, 0.85);
+}
+
+body.notebook-theme #secret-photo {
+    border: 3px solid #1e3a8a;
+    border-radius: 2px;
+    box-shadow:
+        4px 4px 0 rgba(30, 58, 138, 0.25),
+        -2px -2px 0 rgba(30, 58, 138, 0.1);
+    transform: rotate(-1.5deg) scale(0.85);
+}
+
+body.notebook-theme #photo-overlay.visible #secret-photo {
+    transform: rotate(-1.5deg) scale(1);
+    animation: notebookPhotoFloat 4s ease-in-out infinite;
+}
+
+@keyframes notebookPhotoFloat {
+    0%, 100% { transform: rotate(-1.5deg) scale(1) translateY(0); }
+    50%      { transform: rotate(-1.5deg) scale(1.02) translateY(-6px); }
+}
+
+/* Кнопка переключения темы — в стиле тетради */
+body.notebook-theme #theme-toggle {
+    background: #fdfbf3;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    box-shadow: 2px 2px 0 rgba(30, 58, 138, 0.3);
+}
+
+body.notebook-theme #theme-toggle:hover {
+    background: rgba(30, 58, 138, 0.1);
+    color: #152a6b;
+}
+
+/* ---------- Мобильная адаптация ---------- */
 @media (max-width: 700px) {
+    #heart { font-size: 8px; }
+    .love-text {
+        font-size: 1.3rem;
+        letter-spacing: 3px;
+    }
+    #timer { font-size: 0.9rem; }
+    #small-heart { font-size: 6rem; }
+
     #secret-photo {
         max-width: 90vw;
         max-height: 70vh;
+    }
+
+    body.notebook-theme::before {
+        left: 35px;
     }
 }
