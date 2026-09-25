@@ -114,9 +114,8 @@ function startHeartAnimation() {
 /* ============================================================
    3. ТАЙМЕР «МЫ ВМЕСТЕ»
    ============================================================ */
-// ⚠️ ИЗМЕНИ ДАТУ ЗДЕСЬ (год, месяц-1, день)
-// В JS месяц считается с 0: 0 = январь, 4 = май
-const START_DATE = new Date(2026, 4, 12, 0, 0, 0); // 12 мая 2026
+// ⚠️ Дата: 12 мая 2026 (месяц 0-индексовый: 0=январь, 4=май)
+const START_DATE = new Date(2026, 4, 12, 0, 0, 0);
 
 function plural(n, one, few, many) {
     const mod10 = n % 10;
@@ -160,7 +159,7 @@ function startTimer() {
 }
 
 /* ============================================================
-   4. ЧАСТИЦЫ НА ФОНЕ (летящие сердечки)
+   4. ЧАСТИЦЫ НА ФОНЕ
    ============================================================ */
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
@@ -194,6 +193,14 @@ for (let i = 0; i < PARTICLE_COUNT; i++) {
     particles.push(createParticle());
 }
 
+function getParticleColor(alpha) {
+    const isNotebook = document.body.classList.contains('notebook-theme');
+    if (isNotebook) {
+        return `rgba(30, 58, 138, ${alpha * 0.6})`;
+    }
+    return `rgba(179, 86, 122, ${alpha})`;
+}
+
 function drawParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -204,18 +211,16 @@ function drawParticles() {
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rotation);
         ctx.font = `${p.size}px serif`;
-        ctx.fillStyle = `rgba(179, 86, 122, ${p.alpha})`;
+        ctx.fillStyle = getParticleColor(p.alpha);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(p.char, 0, 0);
         ctx.restore();
 
-        // Обновление позиции
         p.y -= p.speedY;
         p.x += p.driftX;
         p.rotation += p.rotSpeed;
 
-        // Если улетела вверх — вернуть снизу
         if (p.y < -30) {
             particles[i] = createParticle(false);
         }
@@ -230,25 +235,21 @@ drawParticles();
    ============================================================ */
 const SCENES = {
     morning: {
-        // 5:00–11:59 — нежное утро
         bg: 'radial-gradient(circle at center, #2b1d24 0%, #12080d 100%)',
         heartColor: '#c98ba0',
         textColor: '#e8d5dc',
     },
     day: {
-        // 12:00–17:59 — тёплый день
         bg: 'radial-gradient(circle at center, #241826 0%, #0e070f 100%)',
         heartColor: '#b3567a',
         textColor: '#d8c4dc',
     },
     evening: {
-        // 18:00–22:59 — фиолетовый вечер
         bg: 'radial-gradient(circle at center, #1f1028 0%, #0a0510 100%)',
         heartColor: '#a05a8e',
         textColor: '#cbb0d2',
     },
     night: {
-        // 23:00–4:59 — глубокая ночь
         bg: 'radial-gradient(circle at center, #14091a 0%, #050208 100%)',
         heartColor: '#8d4a72',
         textColor: '#b8a3c2',
@@ -256,6 +257,9 @@ const SCENES = {
 };
 
 function applyScene() {
+    // Не трогаем тёмную тему, если включён тетрадный режим
+    if (document.body.classList.contains('notebook-theme')) return;
+
     const h = new Date().getHours();
     let scene;
     if (h >= 5 && h < 12)       scene = SCENES.morning;
@@ -265,11 +269,11 @@ function applyScene() {
 
     document.body.style.background = scene.bg;
     heartEl.style.color = scene.heartColor;
-    document.querySelector('.love-text').style.color = scene.textColor;
+    const loveText = document.querySelector('.love-text');
+    if (loveText) loveText.style.color = scene.textColor;
 }
 
 applyScene();
-// Обновляем сцену каждую минуту (если сайт открыт долго)
 setInterval(applyScene, 60 * 1000);
 
 /* ============================================================
@@ -279,16 +283,13 @@ const photoOverlay = document.getElementById('photo-overlay');
 const secretPhoto  = document.getElementById('secret-photo');
 
 let heartClicks = 0;
-let photoBusy = false; // блокировка, чтобы не запускать несколько раз подряд
+let photoBusy = false;
 
-// По клику на ASCII-сердце
 heartEl.addEventListener('click', () => {
     if (photoBusy) return;
 
     heartClicks++;
-    console.log(`Клик по сердцу: ${heartClicks} / 7`); // для отладки
 
-    // Лёгкая визуальная реакция
     heartEl.style.transition = 'transform 0.15s ease';
     heartEl.style.transform = 'scale(1.03)';
     setTimeout(() => {
@@ -304,16 +305,46 @@ heartEl.addEventListener('click', () => {
 function showSecretPhoto() {
     photoBusy = true;
 
-    // 1. Показываем оверлей → фото плавно проявляется (CSS transition)
     photoOverlay.classList.add('visible');
 
-    // 2. Через 4 секунды — плавно скрываем
     setTimeout(() => {
         photoOverlay.classList.remove('visible');
 
-        // 3. Ждём, пока анимация исчезновения завершится, и разблокируем
         setTimeout(() => {
             photoBusy = false;
         }, 1300);
     }, 4000);
 }
+
+/* ============================================================
+   7. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ (тёмная ↔ тетрадная)
+   ============================================================ */
+const themeToggle = document.getElementById('theme-toggle');
+
+// Восстановление сохранённой темы
+if (localStorage.getItem('theme') === 'notebook') {
+    document.body.classList.add('notebook-theme');
+    themeToggle.textContent = '🌙';
+}
+
+themeToggle.addEventListener('click', () => {
+    const isNotebook = document.body.classList.toggle('notebook-theme');
+
+    if (isNotebook) {
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'notebook');
+        // Стираем inline-стили от «сцен по времени»
+        document.body.style.background = '';
+        heartEl.style.color = '';
+        const loveText = document.querySelector('.love-text');
+        if (loveText) loveText.style.color = '';
+    } else {
+        themeToggle.textContent = '✎';
+        localStorage.setItem('theme', 'dark');
+        // Возвращаем сцену по времени суток
+        applyScene();
+    }
+
+    themeToggle.style.transform = 'scale(0.85)';
+    setTimeout(() => { themeToggle.style.transform = ''; }, 150);
+});
